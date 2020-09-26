@@ -1,0 +1,68 @@
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script src="https://api.trello.com/1/client.js?key=910955be8cf85efce2eb715fea302f2b"></script>
+
+<script>
+  var authenticationSuccess = function() {
+  console.log('Successful authentication');
+};
+
+var authenticationFailure = function() {
+  console.log('Failed authentication');
+};
+
+window.Trello.authorize({
+  type: 'popup',
+  name: 'Getting Started Application',
+  scope: {
+    read: 'true',
+    write: 'true' },
+  expiration: 'never',
+  success: authenticationSuccess,
+  error: authenticationFailure
+});
+
+
+var myList = '5f6f3b657a973a233675ae09';
+
+var creationSuccess = function (data) {
+  console.log('Card created successfully.');
+  console.log(JSON.stringify(data, null, 2));
+};
+
+var newCard = {
+  name: 'New Test Card Added By App',
+  desc: 'This is the description of our new card.',
+  // Place this card at the top of our list
+  idList: myList,
+  pos: 'top'
+};
+
+//post new card
+
+// window.Trello.post('/cards/', newCard, creationSuccess);
+
+  
+// read ideas
+
+var readSuccess = function (data) {
+  console.log('List Data Retrieved.');
+  var listData = JSON.stringify(data, null, 2);
+  console.log(listData);
+  document.querySelector('pre').innerHTML = listData;
+};
+
+
+window.Trello.get(`/list/${myList}/cards`,{fields: ['name','url']}, readSuccess);
+
+// listID
+//live: 5f6f3b713c67b25a91e0f20c
+//ideas: 5f6f3b657a973a233675ae09
+
+</script>
+
+<body>
+  <pre></pre>
+</body>
